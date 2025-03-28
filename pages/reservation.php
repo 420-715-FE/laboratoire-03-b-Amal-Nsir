@@ -27,7 +27,57 @@
 <body>
     <nav>
         <a href="../index.php">Retour</a>
-    </nav>              
+    </nav>   
+    <?php
+        if(isset($_POST['submit'])){
+            if (!isset($_POST['province']) || !isset($provinces[$_POST['province']])) {
+                echo "<p>Province non valide";
+                exit;
+            }
+            if  (!isset($_POST['adultes']) || !is_numeric($_POST['adultes']) || $_POST['adultes'] < 1 ) {
+                echo "<p>le nombre adultes doit être un entier supérieur à 0 </p>";
+                exit;
+            }
+            if  (!isset($_POST['adultes']) || !is_numeric($_POST['enfants']) || $_POST['enfants'] < 0) {
+                echo "<p>Les enfants doivent être accompagnés apar un adulte,  un entier supérieur ou égal à 0 </p>";
+                exit;
+            }
+            if  (!isset($_POST['nombreNuits']) || !is_numeric($_POST['nombreNuits']) || $_POST['nombreNuits'] < 1) {
+                echo "<p>Le nombre de nuitée doit être un entier > à 0 </p>";
+                exit;
+            }
+            if  (!isset($_POST['typeChambre']) || !in_array($_POST['typeChambre'], ['1 lit double', '2 lits doubles', '1 lit Queen', '2 lits Queen', '1 lit King'])) {
+                echo "<p>Choisir un type de chambre parmi la liste</p>";
+                exit;
+            }
+            if (
+                !isset($_POST['prenom']) || !isset($_POST['nom']) || !isset($_POST['adresse'])
+                || !isset($_POST['ville']) || !isset($_POST['codePostal']) || !isset($_POST['telephone'])
+                || !isset($_POST['courriel']) || !isset($_POST['dateArrivee'])
+            ) {
+                echo "<p>Toutes les informations personnelles sont obligatoires </p>";
+                exit;
+            }
+
+            $dateArrivee = $_POST['dateArrivee'];
+            $nombreNuits = htmlspecialchars($_POST['nombreNuits']);
+            $typeChambre = htmlspecialchars($_POST['typeChambre']);
+            $nombreAdultes = $_POST['adultes'];
+            $nombreEnfants = $_POST['enfants'];
+
+            echo "<h1>Confirmation</h1>";
+            echo "<p>Votre réservation a été effectuée avec succès.</p>";
+            echo "<p><strong>Date d'arrivée:</strong> $dateArrivee</p>";
+            echo "<p><strong>Nombre de nuits:</strong> $nombreNuits</p>";
+            echo "<p><strong>Type de chambre:</strong> $typeChambre</p>";
+            echo "<p><strong>Nombre d'adultes:</strong> $nombreAdultes</p>";
+            echo "<p><strong>Nombre d'enfants:</strong> $nombreEnfants</p>";
+
+        } else {
+    ?>
+
+  
+        
     <h1>Formulaire de réservation</h1>
     <form action="" method="POST">
         <fieldset class="groupe-champs-textes">
@@ -106,5 +156,8 @@
         <input type="submit" name="submit" value="Réserver" />
         </fieldset>
     </form>
+    <?php
+    }
+    ?>
     </body>
 </html>
